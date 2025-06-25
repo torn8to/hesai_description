@@ -1,18 +1,23 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(hesai_description)
 
-find_package(catkin REQUIRED COMPONENTS
-  xacro
-)
+# Find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(xacro REQUIRED)
 
-catkin_package(CATKIN_DEPENDS xacro)
 
-set(xacro_files
-  ${CMAKE_CURRENT_SOURCE_DIR}/urdf/hesai_standalone.urdf.xacro
-)
-
-xacro_add_files(${xacro_files} INSTALL DESTINATION urdf)
-
+# Install directories
 install(DIRECTORY config launch urdf
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+  DESTINATION share/${PROJECT_NAME}
 )
+
+# Process and install xacro files
+foreach(xacro_file ${xacro_files})
+  get_filename_component(filename ${xacro_file} NAME)
+  xacro_add_xacro_file(${xacro_file} ${filename})
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${filename}
+    DESTINATION share/${PROJECT_NAME}/urdf
+  )
+endforeach()
+
+ament_package()
