@@ -60,8 +60,5 @@
     <parent link="hesai_base"/>
     <child link="${lidar_frame}" />
   </joint>
-
-  <!-- TODO implement gazebo plugin loading if simulation is true -->
 </xacro:macro>
-
 </robot>
